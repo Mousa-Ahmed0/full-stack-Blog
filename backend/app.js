@@ -10,6 +10,8 @@ app.use(express.json());
 app.use(cors());
 //Routes
 app.use('/api/auth',require('./routes/auth.routes'));
+app.use('/api/users',require('./routes/user.routes'));
+
 //Connection to database
 dbConnection();
 //Running the server
