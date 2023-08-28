@@ -39,6 +39,7 @@ function verifyTokenOnlyUser(req,res,next){
 }
 
 module.exports={
+    verifyToken,
     ifAdmin,
     verifyTokenOnlyUser
 }

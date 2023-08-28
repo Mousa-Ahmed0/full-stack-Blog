@@ -65,3 +65,17 @@ module.exports.getUsersCount=asyncHandler(async (req,res)=>{
     const count=await user.count();
     res.status(200).json(count);
 })
+
+
+/**--------------------------------
+ * @desc   Profile photo upload
+ * @router /api/users/profile /profile-photo-upload
+ * @method post
+ * @access private (only logged in user)
+ * ------------------------------------------ */
+module.exports.profilePhotoUpload=asyncHandler(async (req,res)=>{ 
+    if(!req.file)
+        res.status(400).json({message:"No file provided"});
+
+    res.status(200).json({message:"Your profile photo uploaded successfully"});
+})
