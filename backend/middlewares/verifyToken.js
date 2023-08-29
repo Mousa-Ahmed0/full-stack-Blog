@@ -38,8 +38,22 @@ function verifyTokenOnlyUser(req,res,next){
     });
 }
 
+
+//only user himself  or admin
+function verifyTokenOnlyUserOrAdmin(req,res,next){
+    verifyToken(req,res,()=>{
+        if(req.user.id===req.params.id || req.user.isAdmin) 
+            next()
+        else
+             return     res.status(403).json({meassage:"Not allwed,only user himself"});
+
+    });
+}
+
+
 module.exports={
     verifyToken,
     ifAdmin,
-    verifyTokenOnlyUser
+    verifyTokenOnlyUser,
+    verifyTokenOnlyUserOrAdmin
 }

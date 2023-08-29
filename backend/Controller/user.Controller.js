@@ -78,4 +78,30 @@ module.exports.profilePhotoUpload=asyncHandler(async (req,res)=>{
         res.status(400).json({message:"No file provided"});
 
     res.status(200).json({message:"Your profile photo uploaded successfully"});
-})
+});
+
+
+
+
+
+
+/**--------------------------------
+ * @desc   Delete user profile (Account)
+ * @router /api/users/profile/:id
+ * @method DELETE
+ * @access private (only admin or user himself)
+ * ------------------------------------------ */ 
+module.exports.deleteUserAccount=asyncHandler(async (req,res)=>{
+    //1-get user from db
+    const deleUser=user.findById(req.params.id);
+    if(!deleUser)
+        return res.status(404).json({message:"User not found"});
+
+    //2-6 @TODO
+
+    //7- delete the user himself
+    await user.findByIdAndDelete(req.params.id);
+    //8- send a response to the client
+    res.status(200).json({message:"Your profile has been deleted"});
+
+});
