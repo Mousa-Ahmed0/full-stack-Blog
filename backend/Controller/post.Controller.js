@@ -41,3 +41,59 @@ module.exports.createPost=asyncHandler(async(req,res)=>{
     fs.unlinkSync(imagepath);
     
 });
+
+
+/**--------------------------------
+ * @desc get post
+ * @router /api/posts
+ * @method GET
+ * @access public
+ * ------------------------------------------ */
+module.exports.getAllPost=asyncHandler(async(req,res)=>{
+    const POST_PER_PAGE=3;
+    const {pageNumber,category}=req.query;
+    let posts;
+    
+    if(pageNumber){
+        posts=await post.find()
+            .skip((pageNumber -1)* POST_PER_PAGE)
+            .limit(POST_PER_PAGE)
+            .sort({createdAt: -1});
+    }
+    else if(category)
+        posts=await post.find({category}).sort({createdAt: -1});
+    else
+        posts=await post.find().sort({createdAt: -1}).populate("user",['-password']);
+
+    res.status(200).json(posts);
+});
+
+
+
+/**--------------------------------
+ * @desc get single post
+ * @router /api/posts/:id
+ * @method GET
+ * @access private
+ * ------------------------------------------ */
+module.exports.getPost=asyncHandler(async(req,res)=>{
+    const newPost =await post.findById(req.params.id).populate("user",['-password']);
+    if(!post)
+        return res.status(404).json({message:'Post not found'});
+
+    res.status(200).json(newPost);
+}); 
+
+
+
+/**--------------------------------
+ * @desc get count post
+ * @router /api/posts/count
+ * @method GET
+ * @access public
+ * ------------------------------------------ */
+module.exports.getPostCount=asyncHandler(async(req,res)=>{
+    const count =await post.count();
+
+    res.status(200).json(count);
+}); 
