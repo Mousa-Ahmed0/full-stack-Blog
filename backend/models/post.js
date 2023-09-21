@@ -29,7 +29,7 @@ const postSchema =new mongoose.Schema({
         type:Object,
         default:{
             url:"",
-            publicID:null,
+            publicId:null,
         }
     },
     likes:[
