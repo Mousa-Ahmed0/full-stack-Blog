@@ -1,4 +1,4 @@
-const { createPost, getAllPost, getPost, getPostCount } = require('../Controller/post.Controller');
+const { createPost, getAllPost, getPost, getPostCount, deletePost } = require('../Controller/post.Controller');
 const photoUpload = require('../middlewares/photoUpload');
 const validateObjectId = require('../middlewares/validateObjectId');
 const { verifyToken } = require('../middlewares/verifyToken');
@@ -11,6 +11,7 @@ router.route("/")
 // /api/posts/count
 router.route("/count").get(getPostCount);
 // /api/posts/:id
-router.route("/:id").get(validateObjectId,getPost);
+router.route("/:id").get(validateObjectId,getPost)
+    .delete(validateObjectId,verifyToken,deletePost);
 
 module.exports=router; 

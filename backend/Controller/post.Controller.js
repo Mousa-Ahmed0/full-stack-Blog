@@ -97,3 +97,24 @@ module.exports.getPostCount=asyncHandler(async(req,res)=>{
 
     res.status(200).json(count);
 }); 
+
+
+/**--------------------------------
+ * @desc delete post
+ * @router /api/posts/:id
+ * @method DELETE
+ * @access private (only admin or owner of the post)
+ * ------------------------------------------ */
+module.exports.deletePost=asyncHandler(async(req,res)=>{
+    const delPost =await post.findById(req.params.id);
+    if(!post)
+        return res.status(404).json({message:'Post not found'});
+    if(req.user.isAdmin || req.user.id ===delPost.user.toString()){
+        await post.findByIdAndDelete(req.params.id);
+        await cloudinaryRemoveImage(delPost.image.publicId);
+        res.status(200).json({message:"Post has been deleted successfully",postId:delPost._id});
+    }
+    else
+        return res.status(403).json({message:'access denied, forbidden'});
+
+}); 
