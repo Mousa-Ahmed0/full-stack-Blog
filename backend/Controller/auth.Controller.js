@@ -14,7 +14,7 @@ module.exports.registerUser = asyncHandler(async (req, res) => {
         return res.status(400).json({ message: error.details[0].message });
     }
     //is user already exists
-    const newUser = await user.findOne({ email: req.body.email });
+    let newUser = await user.findOne({ email: req.body.email });
     if (newUser) {
         return res.status(400).json({ message: "User already exist" });
     }
