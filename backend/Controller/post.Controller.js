@@ -201,43 +201,35 @@ module.exports.updatePostImage=asyncHandler(async(req,res)=>{
 
 
 /**--------------------------------
- * @desc Update post Image
- * @router /api/posts/upload-image/:id
+ * @desc Toggle like
+ * @router /api/posts/like/:id
  * @method PUT
- * @access private (only owner of the post)  
+ * @access private (only loggeg in user)  
  * ------------------------------------------ */
-module.exports.updatePostImage=asyncHandler(async(req,res)=>{
-    //1. Validation
-    if(!req.file)
-        return res.status(400).json({message:"No image provided"});
+module.exports.toggleLike=asyncHandler(async(req,res)=>{
+    const loggedInUser=req.user.id;
+    const {id:postId}=req.params;
 
-    //2. Get the post from DB and chack if post exist
-    const updPost=await post.findById(req.params.id);
-    if(!updPost)
+    //1. Get the post from DB and chack if post exist
+    let likePost=await post.findById(postId);
+    if(!likePost)
         return res.status(404).json({message:"Post not found..."});
 
-    //3.check if this post belong to logged in user
-    if(req.user.id!== updPost.user.toString())
-        return res.status(403).json({message:"access denied, you are not allowed"});
-
-    //4.delete the old image
-    await cloudinaryRemoveImage(updPost.image.publicId);
+    //2.check if this post belong to logged in user
+    const isPostAlreadyLike=likePost.likes.find((user)=>user.toString()===loggedInUser);
     
-    //5. upload new photo
-    const imagepath=path.join(__dirname,`../images/${req.file.filename}`);
-    const result=await cloudinaryUploadImage(imagepath);
-    
-    //6. update the image field in the DB
-    const newUpdate = await post.findByIdAndUpdate(req.params.id,{
-        $set:{
-            image:{
-                url:result.secure_url,
-                publicId:result.public_id,
-            }
-        }
-    },{new:true}).populate("user",['-password']);
-    //7. send response to the client
-    res.status(200).json(newUpdate);
-    //8. Remove image from the server
-    fs.unlinkSync(imagepath);
-})
+    if(isPostAlreadyLike){
+        likePost=await post.findByIdAndUpdate(postId,
+        {
+            $pull:{likes:loggedInUser}
+        },{new:true});
+    }
+    else{
+        likePost=await post.findByIdAndUpdate(postId,
+        {
+            $push:{likes:loggedInUser}
+        },{new:true});
+    }
+   // send response to the client
+   res.status(200).json(likePost);
+});

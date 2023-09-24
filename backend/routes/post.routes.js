@@ -1,4 +1,4 @@
-const { createPost, getAllPost, getPost, getPostCount, deletePost, updatePost, updatePostImage } = require('../Controller/post.Controller');
+const { createPost, getAllPost, getPost, getPostCount, deletePost, updatePost, updatePostImage, toggleLike } = require('../Controller/post.Controller');
 const photoUpload = require('../middlewares/photoUpload');
 const validateObjectId = require('../middlewares/validateObjectId');
 const { verifyToken } = require('../middlewares/verifyToken');
@@ -20,4 +20,7 @@ router.route("/:id")
 router.route("/update-image/:id")
     .put (validateObjectId,verifyToken,photoUpload.single("image"),updatePostImage);
 
+// /api/posts/like/:id
+router.route("/like/:id")
+    .put(validateObjectId,verifyToken,toggleLike);
 module.exports=router; 
