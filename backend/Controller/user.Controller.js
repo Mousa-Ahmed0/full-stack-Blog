@@ -11,7 +11,7 @@ const { cloudinaryUploadImage,cloudinaryRemoveImage}=require("../utils/cloudinar
  * @access private (only admin)
  * ------------------------------------------ */
 module.exports.getAllUsers=asyncHandler(async (req,res)=>{ 
-    const users=await user.find().select("-password");
+    const users=await user.find().select("-password").populate("Posts");
     res.status(200).json(users);
 })
 
@@ -24,7 +24,7 @@ module.exports.getAllUsers=asyncHandler(async (req,res)=>{
  * ------------------------------------------ */
 module.exports.getUser=asyncHandler(async (req,res)=>{
 
-    const userOne=await user.findById(req.params.id).select("-password");
+    const userOne=await user.findById(req.params.id).select("-password").populate("Posts");
     if(!userOne)
         return     res.status(404).json({message:"User not found"});
     res.status(200).json(userOne);

@@ -5,8 +5,6 @@ const fs=require("fs");
 const { cloudinaryUploadImage,cloudinaryRemoveImage}=require("../utils/cloudinary");
 const { post,validateCreatePost,validateUpdatePost } = require("../models/post")
 
-
-
 /**--------------------------------
  * @desc Create new Post
  * @router /api/posts
@@ -47,7 +45,7 @@ module.exports.createPost=asyncHandler(async(req,res)=>{
  * @desc get post
  * @router /api/posts
  * @method GET
- * @access public
+ * @access private (only admin)
  * ------------------------------------------ */
 module.exports.getAllPost=asyncHandler(async(req,res)=>{
     const POST_PER_PAGE=3;

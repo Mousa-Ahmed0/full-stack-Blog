@@ -44,7 +44,15 @@ const UserSchema =new mongoose.Schema({
     },
 },{
     timestamps:true,
-})
+    toJSON:{virtuals:true},
+    toObject:{virtuals:true}
+});
+// Populate post that belongs to this user whene he/she get his/her profile
+UserSchema.virtual("Posts",{
+    ref:"Post",
+    foreignField:"user",
+    localField:"_id",
+});
 //generate auth token
 UserSchema.methods.generateAuthToken=function(){
     return jwt.sign({id:this._id,isAdmin:this.isAdmin},process.env.SECRET_KEY);
