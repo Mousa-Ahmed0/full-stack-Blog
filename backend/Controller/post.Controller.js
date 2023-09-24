@@ -88,7 +88,7 @@ module.exports.getPost=asyncHandler(async(req,res)=>{
 
 /**--------------------------------
  * @desc get count post
- * @router /api/posts/count
+ * @  /api/posts/count
  * @method GET
  * @access public
  * ------------------------------------------ */
@@ -118,3 +118,126 @@ module.exports.deletePost=asyncHandler(async(req,res)=>{
         return res.status(403).json({message:'access denied, forbidden'});
 
 }); 
+
+
+/**--------------------------------
+ * @desc Update post
+ * @router /api/posts/:id
+ * @method PUT
+ * @access private (only owner of the post)  
+ * ------------------------------------------ */
+module.exports.updatePost=asyncHandler(async(req,res)=>{
+    //1. Validation
+    const {error}=validateUpdatePost(req.body);
+    if(error)
+        return res.status(400).json({message:error.details[0].message});
+
+    //2. Get the post from DB and chack if post exist
+    const updPost=await post.findById(req.params.id);
+    if(!updPost)
+        return res.status(404).json({message:"Post not found..."});
+
+    //3.check if this post belong to logged in user
+    if(req.user.id!== updPost.user.toString())
+        return res.status(403).json({message:"access denied, you are not allowed"});
+
+    //4.update post
+    const newUpdate = await post.findByIdAndUpdate(req.params.id,{
+        $set:{
+            title:req.body.title,
+            description:req.body.description,
+            category:req.body.category
+        }
+    },{new:true}).populate("user",['-password']);
+
+    //5. send response to the client
+    res.status(200).json(newUpdate);
+})
+
+
+
+/**--------------------------------
+ * @desc Update post Image
+ * @router /api/posts/upload-image/:id
+ * @method PUT
+ * @access private (only owner of the post)  
+ * ------------------------------------------ */
+module.exports.updatePostImage=asyncHandler(async(req,res)=>{
+    //1. Validation
+    if(!req.file)
+        return res.status(400).json({message:"No image provided"});
+
+    //2. Get the post from DB and chack if post exist
+    const updPost=await post.findById(req.params.id);
+    if(!updPost)
+        return res.status(404).json({message:"Post not found..."});
+
+    //3.check if this post belong to logged in user
+    if(req.user.id!== updPost.user.toString())
+        return res.status(403).json({message:"access denied, you are not allowed"});
+
+    //4.delete the old image
+    await cloudinaryRemoveImage(updPost.image.publicId);
+    
+    //5. upload new photo
+    const imagepath=path.join(__dirname,`../images/${req.file.filename}`);
+    const result=await cloudinaryUploadImage(imagepath);
+    
+    //6. update the image field in the DB
+    const newUpdate = await post.findByIdAndUpdate(req.params.id,{
+        $set:{
+            image:{
+                url:result.secure_url,
+                publicId:result.public_id,
+            }
+        }
+    },{new:true}).populate("user",['-password']);
+    //7. send response to the client
+    res.status(200).json(newUpdate);
+    //8. Remove image from the server
+    fs.unlinkSync(imagepath);
+})
+
+
+
+/**--------------------------------
+ * @desc Update post Image
+ * @router /api/posts/upload-image/:id
+ * @method PUT
+ * @access private (only owner of the post)  
+ * ------------------------------------------ */
+module.exports.updatePostImage=asyncHandler(async(req,res)=>{
+    //1. Validation
+    if(!req.file)
+        return res.status(400).json({message:"No image provided"});
+
+    //2. Get the post from DB and chack if post exist
+    const updPost=await post.findById(req.params.id);
+    if(!updPost)
+        return res.status(404).json({message:"Post not found..."});
+
+    //3.check if this post belong to logged in user
+    if(req.user.id!== updPost.user.toString())
+        return res.status(403).json({message:"access denied, you are not allowed"});
+
+    //4.delete the old image
+    await cloudinaryRemoveImage(updPost.image.publicId);
+    
+    //5. upload new photo
+    const imagepath=path.join(__dirname,`../images/${req.file.filename}`);
+    const result=await cloudinaryUploadImage(imagepath);
+    
+    //6. update the image field in the DB
+    const newUpdate = await post.findByIdAndUpdate(req.params.id,{
+        $set:{
+            image:{
+                url:result.secure_url,
+                publicId:result.public_id,
+            }
+        }
+    },{new:true}).populate("user",['-password']);
+    //7. send response to the client
+    res.status(200).json(newUpdate);
+    //8. Remove image from the server
+    fs.unlinkSync(imagepath);
+})
