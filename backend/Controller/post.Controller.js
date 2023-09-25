@@ -42,7 +42,7 @@ module.exports.createPost=asyncHandler(async(req,res)=>{
 
 
 /**--------------------------------
- * @desc get post
+ * @desc get all post
  * @router /api/posts
  * @method GET
  * @access private (only admin)
@@ -61,7 +61,7 @@ module.exports.getAllPost=asyncHandler(async(req,res)=>{
     else if(category)
         posts=await post.find({category}).sort({createdAt: -1});
     else
-        posts=await post.find().sort({createdAt: -1}).populate("user",['-password']);
+        posts=await post.find().sort({createdAt: -1}).populate("user",['-password']).populate("Comments");
 
     res.status(200).json(posts);
 });
@@ -75,7 +75,7 @@ module.exports.getAllPost=asyncHandler(async(req,res)=>{
  * @access private
  * ------------------------------------------ */
 module.exports.getPost=asyncHandler(async(req,res)=>{
-    const newPost =await post.findById(req.params.id).populate("user",['-password']);
+    const newPost =await post.findById(req.params.id).populate("user",['-password']).populate("Comments");
     if(!post)
         return res.status(404).json({message:'Post not found'});
 
