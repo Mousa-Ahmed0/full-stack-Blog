@@ -29,7 +29,7 @@ module.exports.createCategory=asyncHandler(async (req,res)=>{
 module.exports.getAllCategory=asyncHandler(async (req,res)=>{
     const categoris=await Category.find();
     res.status(200).json(categoris);
-});
+}); 
 
 
 /**--------------------------------
