@@ -4,7 +4,7 @@ const path =require("path");
 const fs=require("fs");
 const { cloudinaryUploadImage,cloudinaryRemoveImage}=require("../utils/cloudinary");
 const { post,validateCreatePost,validateUpdatePost } = require("../models/post")
-
+const {Comment}=require("../models/Comment");
 /**--------------------------------
  * @desc Create new Post
  * @router /api/posts
@@ -110,6 +110,8 @@ module.exports.deletePost=asyncHandler(async(req,res)=>{
     if(req.user.isAdmin || req.user.id ===delPost.user.toString()){
         await post.findByIdAndDelete(req.params.id);
         await cloudinaryRemoveImage(delPost.image.publicId);
+        //Delete all comments
+        await Comment.deleteMany({postId:delPost._id});
         res.status(200).json({message:"Post has been deleted successfully",postId:delPost._id});
     }
     else

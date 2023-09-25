@@ -1,10 +1,6 @@
 const asyncHandler = require("express-async-handler");
-const path =require("path");
-const fs=require("fs");
-const { cloudinaryUploadImage,cloudinaryRemoveImage}=require("../utils/cloudinary");
 const { Comment,validateCreateCommnt,validateUpdateCommnt } = require("../models/Comment");
 const {user}=require("../models/user");
-const { text } = require("express");
 /**--------------------------------
  * @desc Create new comment
  * @router /api/comments
@@ -76,7 +72,6 @@ module.exports.updateComment=asyncHandler(async (req,res)=>{
     
   
     if(req.user.id !== updComment.user.toString()){
-        console.log(req.user);
         return res.status(403).json({message:"Access denied,only user himself can edit his comment"});
     }
     
