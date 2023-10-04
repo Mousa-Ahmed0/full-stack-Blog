@@ -9,6 +9,7 @@ const Sidebar = ({categoties}) => {
                     <Link className='sidebar-link' key={categoties._id}
                     to={`/posts/categories/${categoties.title}`}>
                         {categoties.title}
+                        
                     </Link>
                 ))}
             </ul>
