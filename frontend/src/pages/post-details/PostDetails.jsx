@@ -2,7 +2,10 @@ import { Link, useParams } from "react-router-dom";
 import { posts } from "../../dummyData";
 import './PostDetails.css'
 import { useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
+import AddComment from "../../components/addComment/AddComment";
+import CommitList from "../../components/addComment/CommitList";
+import swal from "sweetalert";
 const PostDetails = () => {
     useEffect(()=>{
         window.scrollTo(0,0);
@@ -18,6 +21,25 @@ const PostDetails = () => {
 
     }
 
+    //delete post handler
+    const deleteHandler=()=>{
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this Post!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+              swal("Post has been deleted!", {
+                icon: "success",
+              });
+            } else {
+              swal("Something went wrong!");
+            }
+          });
+    }
     return (
         <section className="post-details">
             <div className="post-details-image-wrapper">
@@ -57,10 +79,11 @@ const PostDetails = () => {
                 
                 <div>
                     <i className="bi bi-pencil-square"></i>
-                    <i className="bi bi-trash-fill"></i>
+                    <i onClick={deleteHandler} className="bi bi-trash-fill"></i>
                 </div>
             </div>
-           
+           <AddComment/>
+           <CommitList/>
         </section>
     );
 }
