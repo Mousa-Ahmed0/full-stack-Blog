@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import AddComment from "../../components/addComment/AddComment";
 import CommitList from "../../components/addComment/CommitList";
 import swal from "sweetalert";
+import UpdatePostModal from "./UpdatePostModal";
 const PostDetails = () => {
     useEffect(()=>{
         window.scrollTo(0,0);
@@ -14,6 +15,8 @@ const PostDetails = () => {
     const { id } = useParams();
     const post = posts.find(p => p._id === parseInt(id));
     const [file,setFile]=useState(null);
+    const [updatePost,setUpdatePost]=useState(false);
+
 
     const updateImageHandler=(e)=>{
         e.preventDefault();
@@ -78,12 +81,14 @@ const PostDetails = () => {
                 <i className="bi bi-hand-thumbs-up"><small>{post.likes.length} likes</small></i>
                 
                 <div>
-                    <i className="bi bi-pencil-square"></i>
+                    <i onClick={()=>setUpdatePost(true)} className="bi bi-pencil-square"></i>
                     <i onClick={deleteHandler} className="bi bi-trash-fill"></i>
                 </div>
             </div>
            <AddComment/>
            <CommitList/>
+           {updatePost &&  <UpdatePostModal post={post} setUpdatePost={setUpdatePost}/>
+}
         </section>
     );
 }
