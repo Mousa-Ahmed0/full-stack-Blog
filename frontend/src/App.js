@@ -11,6 +11,7 @@ import PostDetails from "./pages/post-details/PostDetails";
 import { ToastContainer } from "react-toastify";
 import Category from "./pages/category/Category";
 import Profile from "./pages/profile/Profile";
+import NotFound from "./pages/Not-found/NotFound";
 
 function App() {
   return (
@@ -32,7 +33,7 @@ function App() {
         </Route>
 
         <Route path="/admin-dashbored" element={<AdminDashbord/>}/>
-
+        <Route path="*" element={<NotFound/>}/>
      </Routes>
      <Footer/>
     </BrowserRouter>
