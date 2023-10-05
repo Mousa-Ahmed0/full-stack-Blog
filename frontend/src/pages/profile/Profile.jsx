@@ -4,6 +4,7 @@ import {posts} from '../../dummyData';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import swal from "sweetalert";
+import UpdateProfileModal from './UpdateProfileModel';
 
 const Profile = () => {
     useEffect(()=>{
@@ -11,6 +12,7 @@ const Profile = () => {
     },[]);
 
     const [file,setFile]=useState(null);
+    const [updateProfile,setUpdateProfile]=useState(false);
     //form submit handler
     const formSubmitHandler =(e)=>{
         e.preventDefault();
@@ -61,7 +63,7 @@ const Profile = () => {
                     <strong>Date Joined:</strong>
                     <span>Fri Nov 04 2023</span>
                 </div>
-                <button className="profil-update-btn">
+                <button onClick={()=>setUpdateProfile(true)} className="profil-update-btn">
                     <i className="bi bi-file-person-fill">Update Profile</i>
                 </button>
             </div>
@@ -69,9 +71,10 @@ const Profile = () => {
                     <h2 className='profile-posts-list-title'>Youssef Posts</h2>
                     <PostList posts={posts}/>
                 </div>
-                <button onClick={deleteAccountHandler} type='submit' className="delete-account-btn">
-                    Delete Your Account
-                </button>
+            <button onClick={deleteAccountHandler} type='submit' className="delete-account-btn">
+                Delete Your Account
+            </button>
+            {updateProfile && ( <UpdateProfileModal  setUpdateProfile={setUpdateProfile}/>)}
         </section>
      );
 }
