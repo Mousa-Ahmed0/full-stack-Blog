@@ -1,7 +1,27 @@
 import { Link } from 'react-router-dom';
 import AdminSidebar from './AdminSidebar';
+import swal from "sweetalert";
 import './AdminTables.css'
 const UsersTable = () => {
+        //delete user handler
+        const deleteHandler=()=>{
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this User!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+              })
+              .then((willDelete) => {
+                if (willDelete) {
+                  swal("User has been deleted!", {
+                    icon: "success",
+                  });
+                } else {
+                  swal("Something went wrong!");
+                }
+              });
+        }
     return ( 
         <section className="table-container">
             <AdminSidebar/>
@@ -32,7 +52,7 @@ const UsersTable = () => {
                                         <button>
                                             <Link to={`/profile/1`}>View Profile</Link>
                                         </button>
-                                        <button>Delete User</button>
+                                        <button onClick={deleteHandler}>Delete User</button>
                                     </div>
                                 </td>
                             </tr>
