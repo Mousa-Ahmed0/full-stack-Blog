@@ -4,7 +4,7 @@ import './admin.css'
 const AdminSidbar = () => {
     return ( 
         <div className="admin-sidebar">
-            <Link to='/admin-dashbord' className='admin-sidebar-title'>
+            <Link to='/admin-dashboard' className='admin-sidebar-title'>
                 <i className="bi bi-columns"></i>
                 Dashbord
             </Link>

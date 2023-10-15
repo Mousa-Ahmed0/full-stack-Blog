@@ -12,6 +12,7 @@ import { ToastContainer } from "react-toastify";
 import Category from "./pages/category/Category";
 import Profile from "./pages/profile/Profile";
 import NotFound from "./pages/Not-found/NotFound";
+import UsersTable from "./pages/admin/UsersTable";
 
 function App() {
   return (
@@ -32,7 +33,8 @@ function App() {
           <Route path="categories/:category" element={<Category/>}/>
         </Route>
 
-        <Route path="/admin-dashbored" element={<AdminDashbord/>}/>
+        <Route path="/admin-dashboard" element={<AdminDashbord/>}/>
+        <Route path="/admin-dashboard/users-table" element={<UsersTable/>}/>
         <Route path="*" element={<NotFound/>}/>
      </Routes>
      <Footer/>
