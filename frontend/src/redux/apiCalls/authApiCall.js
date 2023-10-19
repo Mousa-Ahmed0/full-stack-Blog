@@ -11,6 +11,8 @@ export function loginuser(user){
             })
             const data =await response.json();
             dispatch(authActons.login(data));
+            localStorage.setItem('userInfo',JSON.stringify(data));
+
         }catch(error){
             console.log(error);
         }

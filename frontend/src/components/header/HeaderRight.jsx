@@ -1,15 +1,32 @@
 import { Link } from "react-router-dom";
 import { useSelector } from 'react-redux';
+import { useState } from "react";
 const HeaderRight = () => {
     const { user } = useSelector(state => state.auth);
+    const [dropdown, setDropdown] = useState(false);
     return (
         <div className="header-right">
             {user ? (
                 <>
                     <div className="header-right-user-info">
-                        <span className="header-right-username">
+                        <span className="header-right-username" onClick={()=>setDropdown(prev => !prev)}>
                             {user?.username}
                         </span>
+                        <img src={user?.profilePhoto.url} className="header-right-user-photo" />
+                        {dropdown && (
+                            <div className="header-right-dropdown">
+                                <Link to={`/profile/${user?._id}`} className="header-dropdown-item">
+                                    <i className="bi bi-file-person"></i>
+                                    <span>Profile</span>
+                                </Link>
+                                <div className="header-deopdown-item">
+                                    <i className="bi bi-box-arrow-in-left"></i>
+                                    <span>Logout</span>
+                                </div>
+
+                            </div>
+                        )}
+
                     </div>
                 </>
             ) : <>
