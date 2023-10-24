@@ -2,8 +2,12 @@ import { Link } from "react-router-dom";
 import './form.css'
 import { useState } from "react";
 import { toast } from "react-toastify";
- 
+import { useDispatch } from "react-redux";
+import { registerUser } from "../../redux/apiCalls/authApiCall";
+
 const Register = () => {
+    const dispatch =useDispatch(); 
+
     const [username,setUsername]=useState("");
     const [email,setEmail]=useState("");
     const [password,setPassword]=useState("");
@@ -14,7 +18,7 @@ const Register = () => {
         if(username.trim()==='') return toast.error("Username is required");
         if(email.trim()==='') return toast.error("Email is required");
         if(password.trim()==='') return toast.error("Password is required");
-        console.log({username,email,password});
+        dispatch(registerUser({username,email,password}));
     }
     return ( 
         <section className="form-container">
