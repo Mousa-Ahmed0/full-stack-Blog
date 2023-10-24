@@ -1,15 +1,23 @@
 import { Link } from "react-router-dom";
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import { useState } from "react";
+import { logoutuser } from "../../redux/apiCalls/authApiCall";
 const HeaderRight = () => {
+    const dispatch=useDispatch();
     const { user } = useSelector(state => state.auth);
     const [dropdown, setDropdown] = useState(false);
+    
+    //logout handler
+    const logoutHandler=()=>{
+        setDropdown(false);
+        dispatch(logoutuser());
+    }
     return (
         <div className="header-right">
             {user ? (
                 <>
                     <div className="header-right-user-info">
-                        <span className="header-right-username" onClick={()=>setDropdown(prev => !prev)}>
+                        <span className="header-right-username" onClick={() => setDropdown(prev => !prev)}>
                             {user?.username}
                         </span>
                         <img src={user?.profilePhoto.url} className="header-right-user-photo" />
@@ -19,7 +27,7 @@ const HeaderRight = () => {
                                     <i className="bi bi-file-person"></i>
                                     <span>Profile</span>
                                 </Link>
-                                <div className="header-deopdown-item">
+                                <div onClick={logoutHandler} className="header-dropdown-item">
                                     <i className="bi bi-box-arrow-in-left"></i>
                                     <span>Logout</span>
                                 </div>
