@@ -27,11 +27,11 @@ export function logoutuser() {
 //Register user
 export function registerUser(user) {
     return async (dispatch) => {
-        try {
+        try { 
             const { data } = await request.post('/api/auth/register', user);
-            dispatch(authActons.login(data.message));
+            dispatch(authActons.register(data.message));
         } catch (error) {
             toast.error(error.response.data.message);
-        }
+        } 
     }
 }

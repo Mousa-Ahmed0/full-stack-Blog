@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
-import { useSelector,useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useState } from "react";
 import { logoutuser } from "../../redux/apiCalls/authApiCall";
 const HeaderRight = () => {
-    const dispatch=useDispatch();
+    const dispatch = useDispatch();
     const { user } = useSelector(state => state.auth);
     const [dropdown, setDropdown] = useState(false);
-    
+
     //logout handler
-    const logoutHandler=()=>{
+    const logoutHandler = () => {
         setDropdown(false);
         dispatch(logoutuser());
     }
@@ -20,7 +20,7 @@ const HeaderRight = () => {
                         <span className="header-right-username" onClick={() => setDropdown(prev => !prev)}>
                             {user?.username}
                         </span>
-                        <img src={user?.profilePhoto.url} className="header-right-user-photo" />
+                        <img src={user?.profilePhoto.url} alt='User Photo' className="header-right-user-photo" />
                         {dropdown && (
                             <div className="header-right-dropdown">
                                 <Link to={`/profile/${user?._id}`} className="header-dropdown-item">
@@ -37,17 +37,18 @@ const HeaderRight = () => {
 
                     </div>
                 </>
-            ) : <>
-                <Link to="/login" className="header-right-link">
-                    <i className="bi bi-box-aeeow-in-right"></i>
-                    <span>Login</span>
-                </Link>
-                <Link to="/register" className="header-right-link">
-                    <i className="bi bi-person-plus"></i>
-                    <span>Register</span>
-                </Link>
-            </>}
-
+            ) : (
+                <>
+                    <Link to="/login" className="header-right-link">
+                        <i className="bi bi-box-aeeow-in-right"></i>
+                        <span>Login</span>
+                    </Link>
+                    <Link to="/register" className="header-right-link">
+                        <i className="bi bi-person-plus"></i>
+                        <span>Register</span>
+                    </Link>
+                </>
+            )}
         </div>
     );
 }
