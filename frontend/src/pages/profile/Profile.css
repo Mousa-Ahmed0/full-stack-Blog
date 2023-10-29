@@ -49,6 +49,7 @@
     font-size: 30px;
     color: var(--white-color);
     margin: 10px 0;
+    text-transform: capitalize;
 }
 .profile-bio{
     font-size: 18px;
@@ -86,6 +87,7 @@
     font-size: 40px;
     color: var(--primary-color);
     border-bottom: 2px solid var(--primary-color);
+    text-transform: capitalize;
 }
 .delete-account-btn{
     background-color: var(--white-color);
