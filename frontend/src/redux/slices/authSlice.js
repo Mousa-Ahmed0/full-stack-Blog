@@ -2,8 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const authSlice = createSlice({
     name: "auth",
     initialState: {
-        user: localStorage.getItem('userInfo') ?
-        JSON.parse(localStorage.getItem("userInfo")) : null,
+        user: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem("userInfo")) : null,
         registerMassage: null,
     },
     reducers: {
@@ -13,9 +12,12 @@ const authSlice = createSlice({
         logout(state) {
             state.user = null;
         },
-        register(state,action){
-            state.registerMassage=action.payload;
-        }
+        register(state, action) {
+            state.registerMassage = action.payload;
+        },
+        setUserPhoto(state, action) {
+            state.user.profilePhoto = action.payload;
+        },
     }
 });
 

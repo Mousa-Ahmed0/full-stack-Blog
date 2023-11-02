@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import swal from "sweetalert";
 import UpdateProfileModal from './UpdateProfileModel';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserProfile } from '../../redux/apiCalls/profileApi';
+import { getUserProfile, uploadProfilePhoto } from '../../redux/apiCalls/profileApi';
 import { useParams } from 'react-router-dom';
 
 const Profile = () => {
@@ -25,7 +25,9 @@ const Profile = () => {
     const formSubmitHandler = (e) => {
         e.preventDefault();
         if (!file) return toast.warning("Ther is no file!");
-        console.log("Image uploaded");
+        const formData=new FormData();
+        formData.append('image',file);
+        dispatch(uploadProfilePhoto(formData));
     }
 
     //delete Account handler

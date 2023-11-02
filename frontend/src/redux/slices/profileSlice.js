@@ -5,10 +5,14 @@ const profileSlice = createSlice({
         profile: null,
     },
     reducers: {
-        setProfile(state,action){
-            state.profile=action.payload;
-        }
+        setProfile(state, action) {
+            state.profile = action.payload;
+        },
+        setProfilePhoto(state, action) {
+            state.profile.profilePhoto = action.payload;
+        },
     }
+
 });
 
 const profileReducer = profileSlice.reducer;

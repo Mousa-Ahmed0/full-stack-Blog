@@ -83,16 +83,19 @@ module.exports.profilePhotoUpload=asyncHandler(async (req,res)=>{
         return res.status(400).json({message:"No file provided"});
 
     //2- get the  path to the image
-    const imagePath=path.join(__dirname,`../images/${req.file.filename}`);
-    console.log(imagePath);
+    const imagePath=path.join(__dirname,`../images/${req.file.filename}`);  
 
     //3- upload to cloudinary
     const result =await cloudinaryUploadImage(imagePath);
-    console.log(result);
+    // console.log("upload to cloudinary");
+
+    // console.log(result);
 
     //4- get the user from DB
     const userN=await user.findById(req.user.id);
-    console.log(userN);;
+    // console.log("get the user from DB");
+
+    // console.log(userN);
 
     //5- delete the old profile photo if exist
     if(userN.profilePhoto.publicId !== null)
@@ -100,15 +103,17 @@ module.exports.profilePhotoUpload=asyncHandler(async (req,res)=>{
 
     //6- chancg the profilephoto filed in the DB
     userN.profilePhoto={
-        url:result.secure_url,
+        url:result.secure_url, 
         publicId:result.public_id,
-    }
+    } 
     await userN.save();
+    // console.log("save db");
 
+    // console.log(userN);
     //7- send response to client
     res.status(200).json({
-        message:"Your profile photo uploaded successfully",
-        profilePhoto:{url:result.secure_url,publicId:result.public_id}
+        message:"Your profile photo uploaded successfully", 
+        profilePhoto:{url:userN.secure_url,publicId:userN.public_id}
     });
 
     //8- remove image from the server

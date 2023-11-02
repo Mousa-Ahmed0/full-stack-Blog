@@ -4,7 +4,7 @@ import { profileReducer } from "./slices/profileSlice";
 const store=configureStore({
     reducer:{
         auth:authReducer,
-        profile:profileReducer
+        profile:profileReducer,
     }
 })
 export default store;
