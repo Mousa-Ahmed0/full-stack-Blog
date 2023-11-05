@@ -25,8 +25,8 @@ const Profile = () => {
     const formSubmitHandler = (e) => {
         e.preventDefault();
         if (!file) return toast.warning("Ther is no file!");
-        const formData=new FormData();
-        formData.append('image',file);
+        const formData = new FormData();
+        formData.append('image', file);
         dispatch(uploadProfilePhoto(formData));
     }
 
@@ -84,7 +84,7 @@ const Profile = () => {
             <button onClick={deleteAccountHandler} type='submit' className="delete-account-btn">
                 Delete Your Account
             </button>
-            {updateProfile && (<UpdateProfileModal setUpdateProfile={setUpdateProfile} />)}
+            {updateProfile && (<UpdateProfileModal profile={profile} setUpdateProfile={setUpdateProfile} />)}
         </section>
     );
 }

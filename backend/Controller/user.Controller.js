@@ -52,7 +52,7 @@ module.exports.updateUserProfile=asyncHandler(async (req,res)=>{
     const updatedUser=await user.findByIdAndUpdate(req.params.id,{
         $set:{
             username:req.body.username,
-            password:req.params.password,
+            password:req.body.password,
             bio:req.body.bio
         }
     },{new:true}).select("-password");
