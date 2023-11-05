@@ -2,15 +2,13 @@ import { useState } from 'react';
 import './UpdateProfileModal.css'
 import { useDispatch } from 'react-redux';
 import { updateProfile } from '../../redux/apiCalls/profileApi';
-import { useParams } from 'react-router-dom';
-
+ 
 const user = {
     username: "Yousef",
     bio: "Hello my name is yousef"
 }
 const UpdateProfileModal = ({ setUpdateProfile, profile }) => {
     const dispatch = useDispatch();
-    const { id } = useParams();
 
     const [username, setUsername] = useState(profile.username);
     const [bio, setBio] = useState(profile.bio);

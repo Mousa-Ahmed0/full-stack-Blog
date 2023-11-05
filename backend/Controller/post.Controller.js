@@ -56,10 +56,11 @@ module.exports.getAllPost=asyncHandler(async(req,res)=>{
         posts=await post.find()
             .skip((pageNumber -1)* POST_PER_PAGE)
             .limit(POST_PER_PAGE)
-            .sort({createdAt: -1});
+            .sort({createdAt: -1})
+            .populate("user",['-password']).populate("Comments");
     }
     else if(category)
-        posts=await post.find({category}).sort({createdAt: -1});
+        posts=await post.find({category}).sort({createdAt: -1}).populate("user",['-password']).populate("Comments");
     else
         posts=await post.find().sort({createdAt: -1}).populate("user",['-password']).populate("Comments");
 
